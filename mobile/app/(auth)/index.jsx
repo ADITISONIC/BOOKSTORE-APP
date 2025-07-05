@@ -1,24 +1,38 @@
-import { View, Text,Image, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native'
-import React from 'react'
-import SafeScreen from '../components/SafeScreen'
-import { useState } from 'react';
-import styles from "../../assets/styles/login.styles"
-import COLORS from '../constants/colors';
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+} from "react-native";
+import React from "react";
+import SafeScreen from "../components/SafeScreen";
+import { useState } from "react";
+import styles from "../../assets/styles/login.styles";
+import COLORS from "../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from 'expo-router';
+import { Link } from "expo-router";
+import { useAuthStore } from "../../store/authStore";
 
 export default function Login() {
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("")
-    const [showPassword,setShowPassword] = useState(false)
-    const [isLoading,setIsLoading] = useState(false)
-    const handleLogin = ()=>{}
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const { user, isLoading, login } = useAuthStore();
+  const handleLogin = async () => {
+    const result = await login(email, password);
+    if (!result.success) Alert.alert("Error", result.error);
+  };
   return (
-      <SafeScreen>
-        <KeyboardAvoidingView
-        style={{flex:1}}
-        behavior={Platform.OS==="ios"?"padding":"height"}
-        >
+    <SafeScreen>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
         <View style={styles.container}>
           <View style={styles.card}>
             <View style={styles.formContainer}>
@@ -39,7 +53,7 @@ export default function Login() {
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
-                  autoCapitalize="none"
+                 
                 />
               </View>
               <View style={styles.inputGroup}>
@@ -93,8 +107,7 @@ export default function Login() {
             </View>
           </View>
         </View>
-
-</KeyboardAvoidingView>
-      </SafeScreen>
+      </KeyboardAvoidingView>
+    </SafeScreen>
   );
 }

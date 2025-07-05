@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   illustrationImage: {
     width: width * 0.75,
     height: width * 0.5,
-    margin:5
+    margin: 5,
   },
   card: {
     backgroundColor: COLORS.cardBackground,
